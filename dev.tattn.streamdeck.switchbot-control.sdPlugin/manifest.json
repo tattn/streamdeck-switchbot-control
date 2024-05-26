@@ -1,20 +1,22 @@
 {
-  "Name": "switchbot-control",
-  "Version": "0.0.0.1",
+  "Name": "SwitchBot Control",
+  "Version": "0.0.1",
   "Author": "tattn",
   "Actions": [
     {
       "Name": "ON/OFF",
       "UUID": "dev.tattn.streamdeck.switchbot-control.onoff",
-      "Icon": "imgs/actions/onoff/power",
+      "Icon": "imgs/actions/onoff/icon",
       "States": [
         {
           "Name": "OFF",
-          "TitleAlignment": "middle"
+          "TitleAlignment": "bottom",
+          "Image": "imgs/actions/onoff/off"
         },
         {
           "Name": "ON",
-          "TitleAlignment": "middle"
+          "TitleAlignment": "bottom",
+          "Image": "imgs/actions/onoff/on"
         }
       ]
     }
