@@ -1,0 +1,48 @@
+{
+  "Name": "switchbot-control",
+  "Version": "0.1.0.0",
+  "Author": "tattn",
+  "Actions": [
+    {
+      "Name": "Playground",
+      "UUID": "dev.tattn.streamdeck.switchbot-control.playground",
+      "States": [
+        {
+          "Image": "imgs/actions/counter/key",
+          "Name": "OFF",
+          "TitleAlignment": "middle"
+        },
+        {
+          "Image": "imgs/actions/counter/key",
+          "Name": "ON",
+          "TitleAlignment": "middle"
+        }
+      ]
+    }
+  ],
+  "Category": "switchbot-control",
+  "CategoryIcon": "imgs/plugin/category-icon",
+  "CodePath": "bin/plugin.js",
+  "PropertyInspectorPath": "pi/index.html",
+  "Description": "Control your switchbot devices",
+  "Icon": "imgs/plugin/marketplace",
+  "SDKVersion": 2,
+  "Software": {
+    "MinimumVersion": "6.5"
+  },
+  "OS": [
+    {
+      "Platform": "mac",
+      "MinimumVersion": "10.15"
+    },
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "Nodejs": {
+    "Version": "20",
+    "Debug": "enabled"
+  },
+  "UUID": "dev.tattn.streamdeck.switchbot-control"
+}

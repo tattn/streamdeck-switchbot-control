@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <title>dev.tattn.streamdeck.switchbot-control</title>
+    <link rel="stylesheet" href="../css/sdpi.css" />
+
+    <style>
+      .sdpi-item[type="checkbox"]:first-of-type {
+        margin-bottom: -7px;
+        margin-top: -2px;
+      }
+
+      .sdpi-item[type="checkbox"] label {
+        margin-left: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sdpi-wrapper">
+      <div class="sdpi-item" id="select_single">
+        <div class="sdpi-item-label">Device</div>
+        <select class="sdpi-item-value select" id="device-list" />
+      </div>
+
+      <hr />
+
+      <div class="sdpi-item">
+        <div class="sdpi-item-label">Token</div>
+        <input
+          class="sdpi-item-value"
+          id="token"
+          value=""
+          placeholder="Enter your SwitchBot's token"
+          type="password"
+        />
+      </div>
+      <div class="sdpi-item">
+        <div class="sdpi-item-label">Secret key</div>
+        <input
+          class="sdpi-item-value"
+          id="secret-key"
+          value=""
+          placeholder="Enter your SwitchBot's secret key"
+          type="password"
+        />
+      </div>
+
+      <a
+        href="https://support.switch-bot.com/hc/en-us/articles/12822710195351-How-to-obtain-a-Token"
+        target="_blank"
+        >How to get token and secret key?</a
+      >
+    </div>
+
+    <script type="module" src="../bin/inspector.js"></script>
+  </body>
+</html>

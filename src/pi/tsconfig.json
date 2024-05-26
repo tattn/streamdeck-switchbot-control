@@ -1,0 +1,15 @@
+{
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "compilerOptions": {
+    "customConditions": ["browser"],
+    // "typeRoots": ["../types", "../node_modules/@types"],
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["dom", "es2022"],
+    "module": "es2022",
+    "moduleResolution": "Bundler",
+    "skipLibCheck": true,
+    "target": "es2022"
+  },
+  "include": ["./**/*.ts"]
+}
