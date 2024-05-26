@@ -1,5 +1,6 @@
 export let ws: WebSocket | null = null;
 let uuid = "";
+let action = "";
 let devices: any[] = [];
 
 const tokenField = document.querySelector<HTMLInputElement>("#token")!;
@@ -14,11 +15,13 @@ const connectElgatoStreamDeckSocket = (
   inInfo: any,
   inActionInfo: string
 ) => {
-  uuid = inPluginUUID;
   const actionInfo = JSON.parse(inActionInfo);
+  console.log(JSON.stringify(actionInfo));
+  uuid = inPluginUUID;
+  action = actionInfo.action;
+
   let settings = actionInfo.payload.settings;
   deviceListSelect.value = settings.deviceId ?? "";
-  console.log(JSON.stringify(settings));
 
   ws = new WebSocket(`ws://127.0.0.1:${inPort}`);
   ws.addEventListener("open", () => {
@@ -54,13 +57,15 @@ const connectElgatoStreamDeckSocket = (
         switch (payload.event) {
           case "setDeviceList":
             devices = payload.payload.devices;
-            deviceListSelect.innerHTML = devices
-              .map(
-                (device) =>
-                  `<option value="${device.deviceId}">${device.deviceName}</option>`
-              )
-              .join("");
-            console.log(JSON.stringify(payload.payload));
+            deviceListSelect.innerHTML =
+              '<option value="" disabled selected>Select a device</option>' +
+              devices
+                .map(
+                  (device) =>
+                    `<option value="${device.deviceId}">${device.deviceName}</option>`
+                )
+                .join("");
+            // console.log(JSON.stringify(payload.payload));
             deviceListSelect.value = payload.payload.settings.deviceId ?? "";
             break;
         }
@@ -70,12 +75,14 @@ const connectElgatoStreamDeckSocket = (
 
   tokenField.addEventListener("change", (event: any) => {
     setGlobalSettings(getGlobalSettingsPayload(event.target.value, "token"));
+    sendToPlugin(action, "");
   });
 
   secretKeyField.addEventListener("change", (event: any) => {
     setGlobalSettings(
       getGlobalSettingsPayload(event.target.value, "secretKey")
     );
+    sendToPlugin(action, "");
   });
 
   deviceListSelect.addEventListener("change", (event: any) => {
@@ -120,6 +127,18 @@ const setSettings = (payload: any) => {
   ws.send(
     JSON.stringify({
       event: "setSettings",
+      context: uuid,
+      payload,
+    })
+  );
+};
+
+const sendToPlugin = (action: string, payload: any) => {
+  if (ws == null) return;
+  ws.send(
+    JSON.stringify({
+      action: action,
+      event: "sendToPlugin",
       context: uuid,
       payload,
     })

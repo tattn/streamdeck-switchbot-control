@@ -24,32 +24,36 @@
   </head>
   <body>
     <div class="sdpi-wrapper">
-      <div class="sdpi-item" id="select_single">
+      <div class="sdpi-item">
         <div class="sdpi-item-label">Device</div>
-        <select class="sdpi-item-value select" id="device-list" />
+        <select class="sdpi-item-value select" id="device-list">
+          <option value="" disabled selected>Select a device</option>
+        </select>
       </div>
 
       <hr />
 
-      <div class="sdpi-item">
-        <div class="sdpi-item-label">Token</div>
-        <input
-          class="sdpi-item-value"
-          id="token"
-          value=""
-          placeholder="Enter your SwitchBot's token"
-          type="password"
-        />
-      </div>
-      <div class="sdpi-item">
-        <div class="sdpi-item-label">Secret key</div>
-        <input
-          class="sdpi-item-value"
-          id="secret-key"
-          value=""
-          placeholder="Enter your SwitchBot's secret key"
-          type="password"
-        />
+      <div type="group" class="sdpi-item">
+        <div class="sdpi-item">
+          <div class="sdpi-item-label">Token</div>
+          <input
+            class="sdpi-item-value"
+            id="token"
+            value=""
+            placeholder="Enter your SwitchBot's token"
+            type="password"
+          />
+        </div>
+        <div class="sdpi-item">
+          <div class="sdpi-item-label">Secret key</div>
+          <input
+            class="sdpi-item-value"
+            id="secret-key"
+            value=""
+            placeholder="Enter your SwitchBot's secret key"
+            type="password"
+          />
+        </div>
       </div>
 
       <a
