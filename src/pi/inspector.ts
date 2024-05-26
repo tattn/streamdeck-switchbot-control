@@ -1,7 +1,6 @@
 export let ws: WebSocket | null = null;
 let uuid = "";
 let action = "";
-let devices: any[] = [];
 
 const tokenField = document.querySelector<HTMLInputElement>("#token")!;
 const secretKeyField = document.querySelector<HTMLInputElement>("#secret-key")!;
@@ -54,24 +53,32 @@ const connectElgatoStreamDeckSocket = (
         secretKeyField.value = settings.secretKey ?? "";
         break;
       case "sendToPropertyInspector":
+        // console.log(JSON.stringify(payload));
         switch (payload.event) {
+          case "onAppear":
+            updateDeviceList(payload.payload.deviceList ?? []);
+            deviceListSelect.value = payload.payload.deviceId ?? "";
+            break;
+
           case "setDeviceList":
-            devices = payload.payload.devices;
-            deviceListSelect.innerHTML =
-              '<option value="" disabled selected>Select a device</option>' +
-              devices
-                .map(
-                  (device) =>
-                    `<option value="${device.deviceId}">${device.deviceName}</option>`
-                )
-                .join("");
-            // console.log(JSON.stringify(payload.payload));
-            deviceListSelect.value = payload.payload.settings.deviceId ?? "";
+            updateDeviceList(payload.payload.devices);
+            deviceListSelect.value = payload.payload.deviceId ?? "";
             break;
         }
         break;
     }
   });
+
+  const updateDeviceList = (newDevices: any[]) => {
+    deviceListSelect.innerHTML =
+      '<option value="" disabled selected>Select a device</option>' +
+      newDevices
+        .map(
+          (device) =>
+            `<option value="${device.deviceId}">${device.deviceName}</option>`
+        )
+        .join("");
+  };
 
   tokenField.addEventListener("change", (event: any) => {
     setGlobalSettings(getGlobalSettingsPayload(event.target.value, "token"));

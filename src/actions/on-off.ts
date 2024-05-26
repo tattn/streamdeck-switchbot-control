@@ -23,21 +23,25 @@ export class OnOffAction extends SingletonAction {
   }
 
   async onPropertyInspectorDidAppear?(
-    ev: PropertyInspectorDidAppearEvent<GlobalSettings>
+    ev: PropertyInspectorDidAppearEvent<OnOffSettings>
   ): Promise<void> {
     if (!this.switchbot) {
       return;
     }
 
-    const res = await this.switchbot.getDeviceIDs();
     const settings = await ev.action.getSettings();
+
+    ev.action.sendToPropertyInspector({
+      event: "onAppear",
+      payload: { deviceId: settings.deviceId, deviceList: settings.deviceList },
+    });
+
+    const deviceList = (await this.switchbot.getDeviceIDs()).body.deviceList;
     ev.action.sendToPropertyInspector({
       event: "setDeviceList",
-      payload: {
-        devices: res.body.deviceList,
-        settings: settings,
-      },
+      payload: { deviceId: settings.deviceId, deviceList },
     });
+    await ev.action.setSettings({ ...settings, deviceList });
   }
 
   async onSendToPlugin?(
@@ -54,21 +58,30 @@ export class OnOffAction extends SingletonAction {
 
   async onKeyDown(ev: KeyDownEvent<OnOffSettings>) {
     const deviceId = ev.payload.settings.deviceId;
-    if (!this.switchbot || !deviceId) {
+    if (!deviceId) {
       return;
     }
 
-    await this.switchbot.commandDevice(
+    await this.switchbot?.commandDevice(
       deviceId,
       ev.payload.state === 1 ? "turnOff" : "turnOn"
     );
+
+    await this.updateState(ev.action, deviceId);
   }
 
   async configure(action: Action<object>, deviceId?: string) {
-    const settings =
+    const globalSettings =
       await streamDeck.settings.getGlobalSettings<GlobalSettings>();
-    this.switchbot = new Switchbot(settings.token, settings.secretKey);
+    this.switchbot = new Switchbot(
+      globalSettings.token,
+      globalSettings.secretKey
+    );
 
+    await this.updateState(action, deviceId);
+  }
+
+  async updateState(action: Action<object>, deviceId?: string) {
     if (!this.switchbot) {
       logger.error("token is not found");
       await action.setTitle("Error");
@@ -94,4 +107,5 @@ export class OnOffAction extends SingletonAction {
 
 type OnOffSettings = {
   deviceId?: string;
+  deviceList?: DevicesDevice[];
 };
