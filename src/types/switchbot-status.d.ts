@@ -14,6 +14,14 @@ interface StatusCeilingLight extends StatusDevice, StatusHasPower {
   colorTemperature: number;
 }
 
+interface StatusCurtain extends StatusDevice {
+  calibrate: boolean;
+  group: boolean;
+  moving: boolean;
+  slidePosition: number;
+  battery: number;
+}
+
 interface StatusResponse extends APIResponse {
   body: StatusDevice;
 }

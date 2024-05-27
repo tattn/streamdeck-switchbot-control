@@ -9,8 +9,9 @@ import streamDeck, {
   WillAppearEvent,
 } from "@elgato/streamdeck";
 import { Switchbot } from "../libs/switchbot";
-import { isStatusPower } from "../libs/switchbot-status";
+import { isStatusCurtain, isStatusPower } from "../libs/switchbot-status";
 import { GlobalSettings } from "../types/types";
+import { wait } from "../libs/util";
 
 const logger = streamDeck.logger.createScope("on-off");
 
@@ -67,6 +68,8 @@ export class OnOffAction extends SingletonAction {
       ev.payload.state === 1 ? "turnOff" : "turnOn"
     );
 
+    await this.setState(ev.action, ev.payload.state === 0);
+    await wait(10000); // wait to update the status
     await this.updateState(ev.action, deviceId);
   }
 
@@ -97,11 +100,25 @@ export class OnOffAction extends SingletonAction {
     const status = await this.switchbot.getDeviceStatus(deviceId);
     if (isStatusPower(status.body)) {
       const isOn = status.body.power === "on";
-      await action.setState(isOn ? 1 : 0);
-      await action.setTitle(isOn ? "ON" : "OFF");
+      await this.setState(action, isOn);
+    } else if (isStatusCurtain(status.body)) {
+      if (!status.body.moving) {
+        const isOn = status.body.slidePosition < 50;
+        await this.setState(action, isOn);
+      } else {
+        // wait to check the status again
+        await wait(2000);
+        await this.updateState(action, deviceId);
+      }
     } else {
       await action.setTitle("?");
     }
+  }
+
+  async setState(action: Action<object>, state: boolean) {
+    await action.setState(state ? 1 : 0);
+    // await action.setTitle(state ? "ON" : "OFF");
+    await action.setTitle("");
   }
 }
 
