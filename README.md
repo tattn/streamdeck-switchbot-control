@@ -19,11 +19,12 @@ https://support.switch-bot.com/hc/en-us/articles/12822710195351-How-to-obtain-a-
 
 ## Enable Cloud Services
 
-1. Select a device that you want to control
-2. Tap "More" (if needed)
-3. Tap a gear button on the top right
-4. Tap "Cloud Services"
-5. Enable "Cloud Services":
+1. Open SwitchBot app
+2. Select a device that you want to control
+3. Tap "More" (if needed)
+4. Tap a gear button on the top right
+5. Tap "Cloud Services"
+6. Enable "Cloud Services":
   <img src="https://github.com/tattn/streamdeck-switchbot-control/assets/8188636/a292ee30-571a-4dfa-af23-3cc7d9f25b9f" width=300px>
 
 # Actions
